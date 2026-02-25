@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang mở Hieu GL Lite...</title>
+    <style>
+        body { background-color: #2f3136; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .success { color: #57F287; }
+    </style>
+</head>
+<body>
+    <h2 class="success">Xác thực thành công!</h2>
+    <p>Đang chuyển hướng bạn về lại Hieu GL Lite...</p>
+    <p>Nếu có thông báo hiện lên, vui lòng chọn <b>"Mở Hieu GL Lite"</b>.</p>
+
+    <script>
+        // 1. Lấy chuỗi "?code=XYZ..." trên thanh địa chỉ mà Discord vừa trả về
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            // 2. Gọi thẳng vào Custom Protocol của app Desktop để truyền code qua
+            window.location.href = "hieugllite://auth?code=" + code;
+            
+            // 3. (Tuỳ chọn) Đóng tab này sau 3 giây cho gọn
+            setTimeout(() => { window.close(); }, 3000);
+        } else {
+            document.body.innerHTML = "<h2 style='color: #ED4245;'>Lỗi: Không tìm thấy mã xác thực.</h2>";
+        }
+    </script>
+</body>
+</html>
