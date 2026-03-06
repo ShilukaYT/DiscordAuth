@@ -1,33 +1,92 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đang mở Hieu GL Lite...</title>
-    <style>
-        body { background-color: #2f3136; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .success { color: #57F287; }
-    </style>
-</head>
+<style>
+    @font-face {
+        font-family: GoogleSans;
+        src: url('./fonts/GoogleSans-Medium.ttf');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    body {
+        background: #121212;
+        color: white;
+        font-family: 'GoogleSans', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .btn-retry {
+        padding: 12px 24px;
+        background: #FFB700;
+        border: none;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Khoảng cách giữa 2 icon */
+    margin-bottom: 30px;
+}
+
+.auth-icon {
+    width: 120px; /* Giảm size xuống một chút để khi đặt cạnh nhau không bị quá to */
+    height: auto;
+}
+
+.connector {
+    font-size: 40px;
+    color: #FFB700; /* Màu vàng giống nút bấm để tạo điểm nhấn */
+    font-weight: bold;
+}
+</style>
+
 <body>
-    <h2 class="success">Xác thực thành công!</h2>
-    <p>Đang chuyển hướng bạn về lại Hieu GL Lite...</p>
-    <p>Nếu có thông báo hiện lên, vui lòng chọn <b>"Mở Hieu GL Lite"</b>.</p>
-
-    <script>
-        // 1. Lấy chuỗi "?code=XYZ..." trên thanh địa chỉ mà Discord vừa trả về
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-
-        if (code) {
-            // 2. Gọi thẳng vào Custom Protocol của app Desktop để truyền code qua
-            window.location.href = "hieugllite://auth?code=" + code;
-            
-            // 3. (Tuỳ chọn) Đóng tab này sau 3 giây cho gọn
-            setTimeout(() => { window.close(); }, 3000);
-        } else {
-            document.body.innerHTML = "<h2 style='color: #ED4245;'>Lỗi: Không tìm thấy mã xác thực.</h2>";
-        }
-    </script>
+<div class="icon-container">
+    <img src="./login_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
+    <span class="connector">→</span>
+    <img src="./account_circle_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
+</div>
+    <h2>Đăng nhập hoàn tất</h2>
+    <p>Bạn có thể yên tâm đóng tab này.</p>
+    <p style="font-size: 0.9em; color: #888;">Nếu bạn không được chuyển hướng tự động, vui lòng nhấn vào nút bên dưới.
+    </p>
+    <button class="btn-retry" onclick="requestOpenApp(code)">MỞ ỨNG DỤNG</button>
 </body>
+
+
+<script>
+    // 1. Lấy chuỗi "?code=XYZ..." trên thanh địa chỉ mà Discord vừa trả về
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    //Gỡ bỏ phần "code=" khỏi URL
+    // 1. Lấy URL hiện tại
+    const url = new URL(window.location.href);
+
+    // 2. Xóa tham số 'code' (hoặc xóa trắng toàn bộ query)
+    url.search = "";
+
+    // 3. Cập nhật thanh địa chỉ mà không load lại trang
+    // window.history.replaceState({}, document.title, url.pathname);
+    function requestOpenApp(code) {
+        window.location.href = "hieugllite://auth?code=" + code;
+    }
+
+    if (code) {
+        // 2. Gọi thẳng vào Custom Protocol của app Desktop để truyền code qua
+        requestOpenApp(code);
+
+    } else {
+        document.body.innerHTML = "<h2 style='color: #ED4245;'>Lỗi: Không tìm thấy mã xác thực.</h2>";
+    }
+</script>
+</body>
+
 </html>
