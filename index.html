@@ -74,7 +74,7 @@
     url.search = "";
 
     // 3. Cập nhật thanh địa chỉ mà không load lại trang
-    // window.history.replaceState({}, document.title, url.pathname);
+    window.history.replaceState({}, document.title, url.pathname);
     function requestOpenApp(code) {
         window.location.href = "hieugllite://auth?code=" + code;
     }
