@@ -47,46 +47,76 @@
     font-weight: bold;
 }
 </style>
-
 <body>
-<div class="icon-container">
-    <img src="./login_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
-    <span class="connector">→</span>
-    <img src="./account_circle_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
-</div>
-    <h2>Đăng nhập hoàn tất</h2>
-    <p>Bạn có thể yên tâm đóng tab này.</p>
-    <p style="font-size: 0.9em; color: #888;">Nếu bạn không được chuyển hướng tự động, vui lòng nhấn vào nút bên dưới.
-    </p>
-    <button class="btn-retry" onclick="requestOpenApp(code)">MỞ ỨNG DỤNG</button>
+    <div class="icon-container">
+        <img src="./login_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
+        <span class="connector">→</span>
+        <img src="./account_circle_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
+    </div>
+    
+    <h2 id="txt-title">Đăng nhập hoàn tất</h2>
+    <p id="txt-desc1">Bạn có thể yên tâm đóng tab này.</p>
+    <p id="txt-desc2" style="font-size: 0.9em; color: #888;">Nếu bạn không được chuyển hướng tự động, vui lòng nhấn vào nút bên dưới.</p>
+    <button id="btn-open" class="btn-retry" onclick="requestOpenApp(code)">MỞ ỨNG DỤNG</button>
 </body>
 
-
 <script>
-    // 1. Lấy chuỗi "?code=XYZ..." trên thanh địa chỉ mà Discord vừa trả về
+    // ==========================================
+    // 1. TỪ ĐIỂN ĐA NGÔN NGỮ
+    // ==========================================
+    const translations = {
+        vi: {
+            title: "Đăng nhập hoàn tất",
+            desc1: "Bạn có thể yên tâm đóng tab này.",
+            desc2: "Nếu bạn không được chuyển hướng tự động, vui lòng nhấn vào nút bên dưới.",
+            btn: "MỞ ỨNG DỤNG",
+            error: "Lỗi: Không tìm thấy mã xác thực."
+        },
+        en: {
+            title: "Login Successful",
+            desc1: "You can safely close this tab.",
+            desc2: "If you are not redirected automatically, please click the button below.",
+            btn: "OPEN APP",
+            error: "Error: Authentication code not found."
+        }
+    };
+
+    // ==========================================
+    // 2. PHÁT HIỆN NGÔN NGỮ TRÌNH DUYỆT VÀ ÁP DỤNG
+    // ==========================================
+    // Lấy ngôn ngữ của trình duyệt (VD: "vi-VN", "en-US")
+    const browserLang = navigator.language; 
+    
+    // Nếu bắt đầu bằng 'vi' thì dùng tiếng Việt, còn lại mặc định là tiếng Anh
+    const lang = browserLang.toLowerCase().startsWith('vi') ? 'vi' : 'en';
+
+    // Đổi chữ trên màn hình
+    document.getElementById("txt-title").innerText = translations[lang].title;
+    document.getElementById("txt-desc1").innerText = translations[lang].desc1;
+    document.getElementById("txt-desc2").innerText = translations[lang].desc2;
+    document.getElementById("btn-open").innerText = translations[lang].btn;
+    // Đổi tiêu đề của cả cái Tab trình duyệt
+    document.title = translations[lang].title;
+
+    // ==========================================
+    // 3. LOGIC XỬ LÝ OAUTH (Giữ nguyên của bác)
+    // ==========================================
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-    //Gỡ bỏ phần "code=" khỏi URL
-    // 1. Lấy URL hiện tại
+    
     const url = new URL(window.location.href);
-
-    // 2. Xóa tham số 'code' (hoặc xóa trắng toàn bộ query)
     url.search = "";
-
-    // 3. Cập nhật thanh địa chỉ mà không load lại trang
     window.history.replaceState({}, document.title, url.pathname);
+
     function requestOpenApp(code) {
         window.location.href = "hieugllite://auth?code=" + code;
     }
 
     if (code) {
-        // 2. Gọi thẳng vào Custom Protocol của app Desktop để truyền code qua
         requestOpenApp(code);
-
     } else {
-        document.body.innerHTML = "<h2 style='color: #ED4245;'>Lỗi: Không tìm thấy mã xác thực.</h2>";
+        // Áp dụng luôn đa ngôn ngữ cho cả dòng báo lỗi
+        document.body.innerHTML = `<h2 style='color: #ED4245;'>${translations[lang].error}</h2>`;
     }
 </script>
-</body>
-
 </html>
