@@ -1,52 +1,94 @@
-<style>
-    @font-face {
-        font-family: GoogleSans;
-        src: url('./fonts/GoogleSans-Medium.ttf');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-    }
+    <style>
+        @font-face {
+            font-family: GoogleSans;
+            src: url('./fonts/GoogleSans-Medium.ttf');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
 
-    body {
-        background: #121212;
-        color: white;
-        font-family: 'GoogleSans', sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-    }
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --subtext-color: #888888;
+            --btn-bg: #FFB700;
+            --btn-text: #121212;
+            --btn-hover: #ffc125;
+            --connector-color: #FFB700;
+            --icon-filter: none;
+        }
 
-    .btn-retry {
-        padding: 12px 24px;
-        background: #FFB700;
-        border: none;
-        border-radius: 20px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 20px;
-    }
-    .icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px; /* Khoảng cách giữa 2 icon */
-    margin-bottom: 30px;
-}
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #FAFAFC;
+                --text-color: #141414;
+                --subtext-color: #555555;
+                --btn-bg: #007AFF;
+                --btn-text: #ffffff;
+                --btn-hover: #0056b3;
+                --connector-color: #007AFF;
+                --icon-filter: invert(0.9);
+            }
+        }
 
-.auth-icon {
-    width: 120px; /* Giảm size xuống một chút để khi đặt cạnh nhau không bị quá to */
-    height: auto;
-}
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'GoogleSans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            transition: background 0.3s, color 0.3s;
+        }
 
-.connector {
-    font-size: 40px;
-    color: #FFB700; /* Màu vàng giống nút bấm để tạo điểm nhấn */
-    font-weight: bold;
-}
-</style>
+        .btn-retry {
+            padding: 12px 28px;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-retry:hover {
+            transform: scale(1.05);
+            background: var(--btn-hover);
+        }
+
+        .icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .auth-icon {
+            width: 120px;
+            height: auto;
+            filter: var(--icon-filter);
+            transition: filter 0.3s;
+        }
+
+        .connector {
+            font-size: 40px;
+            color: var(--connector-color);
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        #txt-desc2 {
+            color: var(--subtext-color);
+        }
+    </style>
 <body>
     <div class="icon-container">
         <img src="./login_256dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg" class="auth-icon">
